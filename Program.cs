@@ -75,7 +75,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Lax
+});
+
 app.UseAuthentication();
 
 app.UseAuthorization();

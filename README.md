@@ -24,3 +24,16 @@ dotnet nuget push ..\..\packages\$owner\Inventory.Service.$version.nupkg --api-k
 or
 dotnet nuget push ..\..\packages\$owner\Inventory.Contracts.$version.nupkg --api-key $gh_pat --source "github"
 ```
+
+## Build the docker image
+```powershell
+$env:GH_OWNER="SampleMicroserviceShop"
+$env:GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t inventory.service:$version .
+```
+
+## Run the docker image
+```powershell
+docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq --network infra_default inventory.service:$version
+```
+
