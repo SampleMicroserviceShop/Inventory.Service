@@ -1,28 +1,34 @@
 ## Inventory.Microservice
 Sample Microservice Shop Inventory microservice.
 
+## General Variables
+```powershell
+$version="1.0.3"
+$contracts_version="1.0.2"
+$owner="SampleMicroserviceShop"
+$gh_pat="[PAT HERE]"
+$cosmosDbConnString="[CONN STRING HERE]"
+$serviceBusConnString="[CONN STRING HERE]"
+```
 
 ## Create and publish package
 ```powershell
-$version="1.0.2"
-$owner="SampleMicroserviceShop"
 dotnet pack --configuration Release -p:PackageVersion=$version -o ..\..\packages\$owner
 ```
 
  ## Add the GitHub package source
 ```powershell
-$owner="SampleMicroserviceShop"
-$gh_pat="[PAT HERE]"
 dotnet nuget add source --username USERNAME --password $gh_pat --store-password-in-clear-text --name github https://nuget.pkg.github.com/$owner/index.json
 ```
+
  ## Push Package to GitHub
 ```powershell
-$version="1.0.2"
-$gh_pat="[PAT HERE]"
-$owner="SampleMicroserviceShop"
 dotnet nuget push ..\..\packages\$owner\Inventory.Service.$version.nupkg --api-key $gh_pat --source "github"
-or
-dotnet nuget push ..\..\packages\$owner\Inventory.Contracts.$version.nupkg --api-key $gh_pat --source "github"
+```
+
+ ## Push Contracts Package to GitHub
+ ```powershell
+dotnet nuget push ..\..\packages\$owner\Inventory.Contracts.$contracts_version.nupkg --api-key $gh_pat --source "github"
 ```
 
 ## Build the docker image
@@ -37,3 +43,9 @@ docker build --secret id=GH_OWNER --secret id=GH_PAT -t inventory.service:$versi
 docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq --network infra_default inventory.service:$version
 ```
 
+## Run the docker image - using ServiceBus ConnectionString
+```powershell
+docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__ConnectionString=$cosmosDbConnString \
+ -e ServiceBusSettings__ConnectionString=$serviceBusConnString -e ServiceSettings__MessageBroker="SERVICEBUS" \
+--network infra_default inventory.service:$version
+```

@@ -16,7 +16,7 @@ const string AllowedOriginSetting = "AllowedOrigin";
 builder.Services.AddMongo()
     .AddMongoRepository<InventoryItem>("inventoryitems")
     .AddMongoRepository<CatalogItem>("catalogitems")
-    .AddMassTransitWithRabbitMq(retryConfigurator =>
+    .AddMassTransitWithMessageBroker (builder.Configuration,retryConfigurator =>
     {
         retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
         retryConfigurator.Ignore(typeof(UnknownItemException));
