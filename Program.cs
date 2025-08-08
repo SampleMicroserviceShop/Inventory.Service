@@ -1,3 +1,4 @@
+using Common.Library.HealthChecks;
 using Common.Library.Identity;
 using Common.Library.MassTransit;
 using Common.Library.MongoDB;
@@ -67,6 +68,8 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Inventory.Service", Version = "v1" });
 });
+builder.Services.AddHealthChecks()
+    .AddMongoDbHealthCheck();
 
 
 
@@ -86,6 +89,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapCustomHealthChecks();
 
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
 {

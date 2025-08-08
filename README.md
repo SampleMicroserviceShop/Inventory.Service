@@ -9,7 +9,7 @@ $owner="SampleMicroserviceShop"
 $gh_pat="[PAT HERE]"
 $cosmosDbConnString="[CONN STRING HERE]"
 $serviceBusConnString="[CONN STRING HERE]"
-$appname="MicroserviceShop"
+$appname="microshop"
 ```
 
 ## Create and publish package
