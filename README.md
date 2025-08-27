@@ -4,7 +4,6 @@ Sample Microservice Shop Inventory microservice.
 ## General Variables
 ```powershell
 $version="1.0.4"
-$contracts_version="1.0.2"
 $owner="SampleMicroserviceShop"
 $gh_pat="[PAT HERE]"
 $cosmosDbConnString="[CONN STRING HERE]"
@@ -26,11 +25,6 @@ dotnet nuget add source --username USERNAME --password $gh_pat --store-password-
  ## Push Package to GitHub
 ```powershell
 dotnet nuget push ..\..\packages\$owner\Inventory.Service.$version.nupkg --api-key $gh_pat --source "github"
-```
-
- ## Push Contracts Package to GitHub
- ```powershell
-dotnet nuget push ..\..\packages\$owner\Inventory.Contracts.$contracts_version.nupkg --api-key $gh_pat --source "github"
 ```
 
 ## Build the docker image
@@ -139,4 +133,11 @@ kubectl get pvc -n $namespace
 kubectl get deployments -n $namespace
 helm repo update
 ```
+
+## Required repository secrets for GitHub workflow
+Repository Settings --> Secret and variables --> Actions --> New Repository Secret
+NuGetPackagePush : Created in GitHub user profile --> Settings --> Developer settings --> Personal access token
+AZURE_CLIENT_ID: From AAD App Registration
+AZURE_SUBSCRIPTION_ID: From Azure Portal subscription
+AZURE_TENANT_ID: From AAD properties page
 
