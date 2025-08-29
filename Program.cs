@@ -59,7 +59,7 @@ if (app.Environment.IsDevelopment())
             .AllowAnyMethod();
     });
 }
-
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
