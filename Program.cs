@@ -1,13 +1,14 @@
 using Common.Library.Configuration;
 using Common.Library.HealthChecks;
 using Common.Library.Identity;
+using Common.Library.Logging;
 using Common.Library.MassTransit;
 using Common.Library.MongoDB;
-using GreenPipes;
+using Common.Library.OpenTelemetry;
 using Inventory.Service.Clients;
 using Inventory.Service.Entities;
 using Inventory.Service.Exceptions;
-using Microsoft.Azure.Amqp.Framing;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Timeout;
@@ -28,7 +29,8 @@ builder.Services.AddMongo()
     })
     .AddJwtBearerAuthentication();
 
-
+builder.Services.AddSeqLogging(builder.Configuration)
+    .AddTracing(builder.Configuration);
 
 AddCatalogClient(builder);
 
